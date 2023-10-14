@@ -1,8 +1,8 @@
-const sequelize = require('sequelize');
+const Sequelize = require('sequelize');
 
 class User extends Sequelize.Model {
   static initiate(sequelize) {
-    User.initiate({
+    User.init({
       email: {
         type: Sequelize.STRING(40),
         allowNull: true,
@@ -38,7 +38,7 @@ class User extends Sequelize.Model {
   }
 
   static associate(db) {
-    db.User.hashMany(db.Post);
+    db.User.hasMany(db.Post);
     db.User.belongsToMany(db.User, {
       foreignKey: 'followingId',
       as: 'Followers',
