@@ -1,3 +1,4 @@
+const { hash } = require('bcrypt');
 const { User, Post } = require('../models');
 
 exports.renderProfile = (req, res) => {
@@ -25,4 +26,28 @@ exports.renderMain = async (req, res, next) => {
     console.error(err);
     next(err);
   }
-}
+};
+
+exports.renderHashtag = async (req, res, next) => {
+  const query = req.query.hashtag;
+  if (!query) {
+    return res.hashtag('/');
+  }
+  try { 
+    const hashtag = await Hashtag.findOne({ where: { title: query } });
+    let posts = [];
+
+    if (hashtag) {
+      posts = await hashtag.getPosts({ include: [{ model: User}] });
+    }
+
+    return res.render('main', {
+      title: `${query} | NodeBird`,
+      twits: posts,
+    });
+
+  } catch(error) {
+    console.error(error);
+    return next(error);
+  }
+};
