@@ -14,7 +14,7 @@ class User extends Sequelize.Model {
       },
       password: {
         type: Sequelize.STRING(100),
-        allowNull: false,
+        allowNull: true,
       },
       provider: {
         type: Sequelize.ENUM('local', 'kakao'),
@@ -23,17 +23,18 @@ class User extends Sequelize.Model {
       },
       snsId: {
         type: Sequelize.STRING(30),
-        allowNull: false,
-      }, 
+        allowNull: true,
+        defaultValue: null, // 또는 다른 기본값 설정
+      },      
     }, {
-        sequelize,
-        timestamps: true,
-        underscored: false,
-        modelName: 'User',
-        tableName: 'users',
-        paranoid: true,
-        charset: 'utf8',
-        collate: 'utf8_general_ci',
+      sequelize,
+      timestamps: true,
+      underscored: false,
+      modelName: 'User',
+      tableName: 'users',
+      paranoid: true,
+      charset: 'utf8',
+      collate: 'utf8_general_ci',
     });
   }
 

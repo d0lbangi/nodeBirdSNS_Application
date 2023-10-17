@@ -16,12 +16,12 @@ exports.uploadPost = async (req, res, next) => {
     if (hashtags) {
       const result = await Promise.all(
         hashtags.map(tag => {
-          return Hashtag.findOneCreate({
+          return Hashtag.findOrCreate({
             where: { title: tag.slice(1).toLowerCase() },
           })
         }),
       );
-      await post.addHashtags(result.map(r => r[0])); 
+      await post.addHashtags(result.map(r => r[0]));
     }
     res.redirect('/');
   } catch (error) {

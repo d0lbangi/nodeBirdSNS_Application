@@ -7,21 +7,21 @@ class Hashtag extends Sequelize.Model {
         type: Sequelize.STRING(15),
         allowNull: false,
         unique: true,
-      }
+      },
     }, {
       sequelize,
       timestamps: true,
       underscored: false,
-      modelName: 'Post',
-      tableName: 'posts',
+      modelName: 'Hashtag',
+      tableName: 'hashtags',
       paranoid: false,
-      charset: 'utf8',
-      collate: 'utf8_general_ci',
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_general_ci',
     });
   }
 
   static associate(db) {
-    db.Hashtag.belongsTo(db.Post, { through : 'PostHashtag'});
+    db.Hashtag.belongsToMany(db.Post, { through: 'PostHashtag' });
   }
 };
 

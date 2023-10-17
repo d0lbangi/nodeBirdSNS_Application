@@ -7,10 +7,12 @@ const User = require('../models/user');
 
 module.exports = () => {
   passport.serializeUser((user, done) => {
+    console.log('serialize');
     done(null, user.id);
   });
 
   passport.deserializeUser((id, done) => {
+    console.log('deserialize');
     User.findOne({
       where: { id },
       include: [{
@@ -20,11 +22,14 @@ module.exports = () => {
       }, {
         model: User,
         attributes: ['id', 'nick'],
-        as: 'Followings', 
+        as: 'Followings',
       }],
     })
-    .then(user => done(null, user))
-    .catch(err => done(err));
+      .then(user => {
+        console.log('user', user);
+        done(null, user);
+      })
+      .catch(err => done(err));
   });
 
   local();

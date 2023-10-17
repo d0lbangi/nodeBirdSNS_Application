@@ -5,19 +5,19 @@ const User = require('../models/user');
 exports.join = async (req, res, next) => {
   const { email, nick, password } = req.body;
   try {
-    const exUser = await User.findOne({ where : { email } });
+    const exUser = await User.findOne({ where: { email } });
     if (exUser) {
       return res.redirect('/join?error=exist');
     }
-    const hash = await bcrypt.hash(passport, 12);
+    const hash = await bcrypt.hash(password, 12);
     await User.create({
       email,
       nick,
       password: hash,
     });
     return res.redirect('/');
-  } catch (err) {
-    console.error(err);
+  } catch (error) {
+    console.error(error);
     return next(error);
   }
 }
@@ -29,7 +29,7 @@ exports.login = (req, res, next) => {
       return next(authError);
     }
     if (!user) {
-      return res.redirect(`/?loginError=${info.message}`);
+      return res.redirect(`/?error=${info.message}`);
     }
     return req.login(user, (loginError) => {
       if (loginError) {
@@ -38,8 +38,8 @@ exports.login = (req, res, next) => {
       }
       return res.redirect('/');
     });
-  })(req, res, next); // 미들웨어 내의 미들웨어에는 (req, res, next)를 붙여줘야한다.
-}
+  })(req, res, next); // 미들웨어 내의 미들웨어에는 (req, res, next)를 붙입니다.
+};
 
 exports.logout = (req, res) => {
   req.logout(() => {

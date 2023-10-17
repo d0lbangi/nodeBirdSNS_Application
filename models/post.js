@@ -9,8 +9,8 @@ class Post extends Sequelize.Model {
       },
       img: {
         type: Sequelize.STRING(200),
-        allowNull: false,
-      }, 
+        allowNull: true,
+      },
     }, {
       sequelize,
       timestamps: true,
@@ -18,15 +18,15 @@ class Post extends Sequelize.Model {
       modelName: 'Post',
       tableName: 'posts',
       paranoid: false,
-      charset: 'utf8',
-      collate: 'utf8_general_ci',
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_general_ci',
     });
   }
-
+  
   static associate(db) {
     db.Post.belongsTo(db.User);
-    db.Post.belongsToMany(db.Hashtag, { through : 'PostHashTag'});
+    db.Post.belongsToMany(db.Hashtag, {through: 'PostHashtag'});
   }
-};
+}
 
 module.exports = Post;
